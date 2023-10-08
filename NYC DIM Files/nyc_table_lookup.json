@@ -1,0 +1,15 @@
+[
+    {
+        "table_name":"dim_payment_mode"
+    },
+    {
+        "table_name":"dim_taxi_code"
+    },
+    {
+        "table_name":"dim_vendor"
+    },
+    {
+        "table_name":"dim_taxi_zone"
+    }
+    
+]
