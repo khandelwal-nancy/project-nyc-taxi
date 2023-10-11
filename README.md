@@ -1,4 +1,4 @@
-# Analyzing NYC Taxi Data in Azure Environment
+# Exploring New York City Taxi Data with Azure
 
 
 ## Introduction 
