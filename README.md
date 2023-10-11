@@ -1,45 +1,54 @@
-Exploring New York City Taxi Data with Azure
+# Analyzing NYC Taxi Data in Azure Environment
 
-Introduction
+
+## Introduction 
+
 The New York City Taxi and Limousine Commission (TLC) generously provides us with lots of data about taxi rides in the city. This data includes things like how much people paid for their rides, how long the trips took, and which part of the city they went to. In this project, we're using Azure, a cloud service, to do some cool stuff with this data. We want to clean it up, make it easier to understand, and then use it to create a cool Power BI dashboard to compare different things about taxi rides.
 
-Project Goals
 
-Getting the Data: We want to grab the monthly data from NYC.org, starting from 2012 until now, and save it in a special place using Azure Data Factory (ADF).
-Storing the Data: Once we have the data, we'll keep it safe in something called "Azure Data Lake Storage" in a special container.
-Cleaning and Changing the Data: We'll use a tool called Azure Databricks to clean and change the data, making it neater and more useful. Then, we'll store it in a different place as "Delta tables."
-Adding More Information: We'll make the data even more helpful by adding new tables that tell us stuff about payment methods, rates, areas in the city, taxi companies, and dates.
-Keeping the Data: We'll store all this cleaned-up data in an Azure SQL Database for future use.
-Making It Pretty: Finally, we'll use Power BI to make a nice dashboard with charts and graphs that help us understand the taxi data better.
-How We Do It
+### Project Objectives 
 
-Data Sources: We get our data from two places, NYC.org and GitHub. They have files about taxi trips in a special format called "Parquet" from 2012 until now. Some other data, like payment methods and dates, is in simple CSV files on GitHub.
+1. **Data Ingestion:** We want to grab the monthly data from NYC.org, starting from 2012 until now, and save it in a special place using Azure Data Factory (ADF). 
+2. **Data Storage:** Once we have the data, we'll keep it safe in something called "Azure Data Lake Storage" in a special container.
+3. **Data Cleaning and Transformation:** We'll use a tool called Azure Databricks to clean and change the data, making it neater and more useful. Then, we'll store it in a different place as "Delta tables."
+4. **Data Modelling:** Add new Dimension tables for Payment Mode, Rate, Borough and Zone, Vendor, and Calendar. 
+5. **Data Processing and Warehousing:** Process and aggregate data, and in an Azure SQL Database. 
+6. **Data Visualization:** Create a Power BI dashboard for visualizing and comparing various aspects of taxi rides. 
 
-Getting the Data: We use Azure Data Factory to fetch the data from NYC.org and GitHub, and then we put it in our storage in Azure.
+## Solution Architecture
 
-Fixing the Data: In Azure Databricks, we clean and fix the data, making sure it's accurate and easy to work with. Then, we store it in our special "Delta tables."
+![NYC solution diagram](https://github.com/Shakti93/nyc-taxi-project/assets/84408451/528b297c-fe6e-401c-b660-e8b017d2abf3)
 
-Storing the Data: Our cleaned-up data, along with the extra information we added, finds a home in an Azure SQL Database.
+## Data Pipeline Implementation
 
-Making It Look Good: With Power BI, we create a dashboard with pretty pictures that help us see things like how many rides there are, how much they cost, how long they take, and more.
+![NYC Taxi ADF Pipeline](https://github.com/Shakti93/nyc-taxi-project/assets/84408451/44b2257d-8a53-4e4e-893c-552b49c52338)
 
-What the Dashboard Shows
+1. **Data Sources:** We get our data from two places, NYC.org and GitHub. They have files about taxi trips in a special format called "Parquet" from 2012 until now. Some other data, like payment methods and dates, is in simple CSV files on GitHub.
+2. **Data Ingestion:** The data is extracted from NYC.org and Github Repository using HTTP Protocol Linked Service in Azure Data Factory to Azure Data Lake Storage and stored in the NYC raw container. ADF pipelines are created to fetch monthly data on 1st day of each month using the Tumbling Window Trigger. 
+3. **Data Transformation:** The raw data is transformed using Azure Databricks. The transformation process includes data cleaning, data validation, and data enrichment. Exploratory data analysis (EDA) is performed to understand data patterns and anomalies. The transformed data is stored in the NYC processed container as Tables. Trip data is incrementally loaded into delta tables to ensure that only data for the current month is loaded and updated data to reduce the processing cost and time. Delta tables also provide transactional capabilities, versioning, and schema enforcement. 
+5. **Data Warehousing:** Processed trip data along with DIM tables is stored in SQL Server which will be used for Data Warehousing and for future analysis and Visualization in Power BI 
+5. **Data Visualization:** Power BI is used for visualizing and creating interactive dashboards. The dashboard includes charts, graphs, and maps to showcase trends, ride patterns, fare distributions, and more. 
 
-Important Numbers: We have cards that show big numbers like the total number of rides, average fare, average trip distance, and average trip duration, all based on what we want to see.
+## Power BI Dashboard 
 
-Trends Over Time: There's a chart that changes to show us how these numbers have been changing over the past year.
+![NYC PowerBI Report](https://github.com/Shakti93/nyc-taxi-project/assets/84408451/5418bfb7-1043-4844-aab5-fc366f370667)
 
-Time of Day: We have another chart that shows us when people take taxi rides during the day.
+The visualizations for the Power BI dashboard include- 
 
-Different Parts of the City: A chart helps us see which areas of the city are busier for taxi rides.
+1. Key Performance Indicator (KPI) cards that provide insights into Total Rides, Average Fare, Average Trip Distance, and Average Trip Duration within a specific filter context.
+2. A dynamic Line Chart with parameterization, enabling the display of trends in Total Rides, Average Fare, Average Trip Distance, and Average Trip Duration over the course of the past year.
+3. A Bar Graph illustrating the hourly distribution of Total Rides, Average Fare, Average Trip Distance, and Average Trip Duration, facilitating a comprehensive view of time-based patterns.
+4. A Horizontal Bar Graph depicting the distribution of rides by Borough, allowing for easy comparison and analysis of ride distribution across different geographic areas.
+5. A Map visualization presenting the spatial density of rides by location, allowing for a visual exploration of ride hotspots.
+6. A Donut Chart representing the distribution of payment modes, providing an overview of how customers choose to pay for their rides.
 
-Map View: We even have a map that shows where most of the taxi rides happen in the city.
 
-How People Pay: Finally, we have a chart that tells us how people like to pay for their taxi rides.
+## Project highlights  
 
-Cool Things We Did
+1. Proficiently orchestrated a comprehensive data pipeline within Azure services, encompassing data ingestion, storage, cleaning, transformation, and analysis of New York taxi data, ensuring seamless data flow and management.
+2. Crafted an intuitive Power BI dashboard that empowers users to conduct in-depth comparisons of ride fares, trip lengths, timings, and boroughs, with the flexibility to explore and analyze multiple influencing factors.
 
-We used Azure to make the whole process of getting and using the data super easy.
-The Power BI dashboard we created helps us understand the taxi data in a fun and useful way.
-Conclusion
-This project shows how we can use Azure to work with big sets of data like taxi information. The insights we get from looking at taxi ride details can help taxi companies and city planners make better decisions.
+
+## Conclusion 
+
+We get our data from two places, NYC.org and GitHub. They have files about taxi trips in a special format called "Parquet" from 2012 until now. Some other data, like payment methods and dates, is in simple CSV files on GitHub.
